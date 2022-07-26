@@ -7,15 +7,15 @@ export default {
   key: "notion-updated-page",
   name: "Updated Page", /* eslint-disable-line pipedream/source-name */
   description: "Emit new event when a page is updated",
-  version: "0.0.2",
+  version: "0.0.3",
   type: "source",
   dedupe: "unique",
   props: {
     ...base.props,
-    databaseId: {
+    pageId: {
       propDefinition: [
         notion,
-        "databaseId",
+        "pageId",
       ],
     },
   },
@@ -23,7 +23,7 @@ export default {
     const params = this.lastUpdatedSortParam();
     const lastCheckedTimestamp = this.getLastUpdatedTimestamp();
 
-    const pagesStream = this.notion.getPages(this.databaseId, params);
+    const pagesStream = this.notion.getPages(this.pageId, params);
 
     for await (const page of pagesStream) {
       if (!this.isResultNew(page.last_edited_time, lastCheckedTimestamp)) {
